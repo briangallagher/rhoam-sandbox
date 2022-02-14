@@ -24,21 +24,20 @@ oc process -f "${DIR}/sandbox/host-operator-config.yaml" \
 oc rollout restart deployment/registration-service -n toolchain-host-operator
 oc rollout restart deployment/host-operator-controller-manager -n toolchain-host-operator
 
-# oc project openshift-customer-monitoring
+oc project openshift-customer-monitoring
 
-# oc process -f "${DIR}/sandbox/prometheus-config.yaml" \
-#   -p PROMETHEUS_GITHUB_CLIENT_ID="${PROMETHEUS_GITHUB_CLIENT_ID}" \
-#   -p PROMETHEUS_GITHUB_CLIENT_SECRET="${PROMETHEUS_GITHUB_CLIENT_SECRET}" \
-#   -p PROMETHEUS_GITHUB_COOKIE_SECRET="${PROMETHEUS_GITHUB_COOKIE_SECRET}" \
-#   | oc apply -n openshift-customer-monitoring -f -
-# oc scale statefulset/prometheus-prometheus --replicas=0 -n openshift-customer-monitoring
-# oc scale statefulset/prometheus-prometheus --replicas=2 -n openshift-customer-monitoring
+oc process -f "${DIR}/sandbox/prometheus-config.yaml" \
+  -p PROMETHEUS_GITHUB_CLIENT_ID="${PROMETHEUS_GITHUB_CLIENT_ID}" \
+  -p PROMETHEUS_GITHUB_CLIENT_SECRET="${PROMETHEUS_GITHUB_CLIENT_SECRET}" \
+  -p PROMETHEUS_GITHUB_COOKIE_SECRET="${PROMETHEUS_GITHUB_COOKIE_SECRET}" \
+  | oc apply -n openshift-customer-monitoring -f -
+oc scale statefulset/prometheus-prometheus --replicas=0 -n openshift-customer-monitoring
+oc scale statefulset/prometheus-prometheus --replicas=2 -n openshift-customer-monitoring
 
-# oc process -f "${DIR}/sandbox/grafana-config.yaml" \
-#   -p GRAFANA_GITHUB_CLIENT_ID="${GRAFANA_GITHUB_CLIENT_ID}" \
-#   -p GRAFANA_GITHUB_CLIENT_SECRET="${GRAFANA_GITHUB_CLIENT_SECRET}" \
-#   -p GRAFANA_GITHUB_COOKIE_SECRET="${GRAFANA_GITHUB_COOKIE_SECRET}" \
-#   | oc apply -n openshift-customer-monitoring -f -
-# oc patch configmap grafana-dashboard-definitions -n openshift-customer-monitoring --patch-file "${DIR}/sandbox/grafana-dashboard-definitions-patch.yaml"
-# oc rollout restart deployment/grafana -n openshift-customer-monitoring
-
+oc process -f "${DIR}/sandbox/grafana-config.yaml" \
+  -p GRAFANA_GITHUB_CLIENT_ID="${GRAFANA_GITHUB_CLIENT_ID}" \
+  -p GRAFANA_GITHUB_CLIENT_SECRET="${GRAFANA_GITHUB_CLIENT_SECRET}" \
+  -p GRAFANA_GITHUB_COOKIE_SECRET="${GRAFANA_GITHUB_COOKIE_SECRET}" \
+  | oc apply -n openshift-customer-monitoring -f -
+oc patch configmap grafana-dashboard-definitions -n openshift-customer-monitoring --patch-file "${DIR}/sandbox/grafana-dashboard-definitions-patch.yaml"
+oc rollout restart deployment/grafana -n openshift-customer-monitoring
