@@ -1,0 +1,18 @@
+only make RHOAM operator cluster scope for mulittenant install (main.go)
+	if watchNamespace == "" || !strings.Contains(watchNamespace, "sandbox") {
+
+Ensure RHOAMTenant CRD is Namespace Scoped 
+
+RBAC: Figure out what minimum RBAC we need to add for cluster scoped RHOAM 
+to install.  Also, where how to add that to the code base.
+
+Building: 
+How to build the bundle, the index and the operator image.
+Issue: Rhoam tenant CRD should ideally not be in single tenant rhoam
+If we do include it, then we could re-use the images above. 
+
+Ref: https://github.com/integr8ly/integreatly-operator/pull/2490/files
+
+
+
+Separate JIRA to define and document the release process 

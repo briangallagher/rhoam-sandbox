@@ -40,7 +40,7 @@ sudo GOPATH=<GOPATH> make install
 # If you want to use different kubeconfig than the default one, then specify it using -k parameter
 
 # In a brand-new cluster, the first setup command will create only a subset of the admin config since there are still missing the Toolchain CRDs.
-sandbox-cli adm setup -c "rhoam-ds-stg.mfpg.p1.openshiftapps.com" -o ./out/config -y
+sandbox-cli adm setup -c "rhoam-ds-prod.xe9u.p1.openshiftapps.com" -o ./out/config -y
 sleep 2
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
@@ -56,7 +56,7 @@ cp out/config/rhoam-sb/sandbox.yaml ~/.sandbox.yaml
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # Step 4: Install the sandbox host operator
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  
-sandbox-cli adm install -t host sandbox -c "rhoam-ds-stg.mfpg.p1.openshiftapps.com" -y 
+sandbox-cli adm install -t host sandbox -c "rhoam-ds-prod.xe9u.p1.openshiftapps.com" -y 
 # wait for toolchain-host-operator to complete installation
 oc::wait::object::availability "oc get deployment -n toolchain-host-operator host-operator-controller-manager" 10 600
 oc wait -n toolchain-host-operator --for=condition=Available deployment/host-operator-controller-manager
@@ -66,7 +66,7 @@ sleep 10
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # Step 5: Install the sandbox member operator
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-sandbox-cli adm install -t member1 sandbox -c "rhoam-ds-stg.mfpg.p1.openshiftapps.com" -y 
+sandbox-cli adm install -t member1 sandbox -c "rhoam-ds-prod.xe9u.p1.openshiftapps.com" -y 
 # wait for toolchain-member-operator to complete installation
 oc::wait::object::availability "oc get deployment -n toolchain-member-operator member-operator-controller-manager" 10 600
 oc wait -n toolchain-member-operator --for=condition=Available deployment/member-operator-controller-manager
@@ -80,7 +80,7 @@ sleep 10
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # Step 6: Run the setup again to create the rest of the admin configs
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-sandbox-cli adm setup -c "rhoam-ds-stg.mfpg.p1.openshiftapps.com" -o ./out/config -y
+sandbox-cli adm setup -c "rhoam-ds-prod.xe9u.p1.openshiftapps.com" -o ./out/config -y
 sleep 2
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
@@ -100,7 +100,7 @@ sudo make install
 # Sets the configure from here: resources/<environment-name-directory>/configure/host/sandbox/
 # sandbox-cli adm configure -t host sandbox -y
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-sandbox-cli adm configure -t host sandbox -c "rhoam-ds-stg.mfpg.p1.openshiftapps.com" -y 
+sandbox-cli adm configure -t host sandbox -c "rhoam-ds-prod.xe9u.p1.openshiftapps.com" -y 
 
 oc wait -n toolchain-host-operator --for=condition=Available deployment/registration-service
 oc::wait::object::availability "oc get deployment -n toolchain-host-operator registration-service" 10 600
@@ -120,36 +120,39 @@ oc wait -n toolchain-host-operator --for=condition=Available deployment/registra
 # The Secret toolchain-member-operator/member-operator-secret has been created
 # Please go to this link to configure the actual values of the secret if needed:
 # https://console-openshift-console.apps.bg.8fkd.s1.devshift.org/k8s/ns/toolchain-member-operator/secrets/member-operator-secret
-sandbox-cli adm configure -t member1 sandbox -c "rhoam-ds-stg.mfpg.p1.openshiftapps.com" -y
+sandbox-cli adm configure -t member1 sandbox -c "rhoam-ds-prod.xe9u.p1.openshiftapps.com" -y
 
-# Install and configure RHOAM
-sandbox-cli adm install -t member1 rhoam-operator -c "rhoam-ds-stg.mfpg.p1.openshiftapps.com" -y 
-sandbox-cli adm configure -t member1 rhoam-operator -c "rhoam-ds-stg.mfpg.p1.openshiftapps.com" -y
+
+sandbox-cli adm install -t member1 rhoam-operator -c "rhoam-ds-prod.xe9u.p1.openshiftapps.com" -y 
+# Wait for the operator to deploy
+sleep 10
+sandbox-cli adm configure -t member1 rhoam-operator -c "rhoam-ds-prod.xe9u.p1.openshiftapps.com" -y
+
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Install and configure host Prometheus 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-sandbox-cli adm install -t host prometheus -c "rhoam-ds-stg.mfpg.p1.openshiftapps.com" -y
+sandbox-cli adm install -t host prometheus -c "rhoam-ds-prod.xe9u.p1.openshiftapps.com" -y
 oc::wait::object::availability "oc get deployment -n openshift-customer-monitoring prometheus-operator" 10 600
 oc wait -n openshift-customer-monitoring --for=condition=Available deployment/prometheus-operator
 sleep 10
-sandbox-cli adm configure -t host prometheus -c "rhoam-ds-stg.mfpg.p1.openshiftapps.com" -y
+sandbox-cli adm configure -t host prometheus -c "rhoam-ds-prod.xe9u.p1.openshiftapps.com" -y
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Install and configure member Prometheus 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-sandbox-cli adm install -t member1 prometheus -c "rhoam-ds-stg.mfpg.p1.openshiftapps.com" -y
+sandbox-cli adm install -t member1 prometheus -c "rhoam-ds-prod.xe9u.p1.openshiftapps.com" -y
 oc::wait::object::availability "oc get deployment -n openshift-customer-monitoring prometheus-operator" 10 600
 oc wait -n openshift-customer-monitoring --for=condition=Available deployment/prometheus-operator
 sleep 10
-sandbox-cli adm configure -t member1 prometheus -c "rhoam-ds-stg.mfpg.p1.openshiftapps.com" -y
+sandbox-cli adm configure -t member1 prometheus -c "rhoam-ds-prod.xe9u.p1.openshiftapps.com" -y
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Configure host Grafana
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-sandbox-cli adm configure -t host grafana -c "rhoam-ds-stg.mfpg.p1.openshiftapps.com" -y
+sandbox-cli adm configure -t host grafana -c "rhoam-ds-prod.xe9u.p1.openshiftapps.com" -y
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Verify the status
@@ -161,7 +164,7 @@ sandbox-cli adm configure -t host grafana -c "rhoam-ds-stg.mfpg.p1.openshiftapps
 
 # Registration Service
 # oc get routes -n toolchain-host-operator
-# registration-service-toolchain-host-operator.apps.rhoam-ds-stg.mfpg.p1.openshiftapps.com
+# registration-service-toolchain-host-operator.apps.rhoam-ds-prod.xe9u.p1.openshiftapps.com
 
 # oc patch usersignup -p '{"spec":{"states":["approved"]}}' --type=merge 8f115f99-baa2-4d31-a6d2-fa2e9d99ddc6 -n toolchain-host-operator
 
@@ -173,10 +176,9 @@ sandbox-cli adm configure -t host grafana -c "rhoam-ds-stg.mfpg.p1.openshiftapps
 
 
 
+# oc patch usersignup -p '{"spec":{"states":["approved"]}}' --type=merge e7c8776c-f528d76ff-f708-43ed-8cd5-fe16f4fe0ce6test-user03-rhoam -n toolchain-host-operator
 
-
-
-
+oc patch usersignup -p '{"spec":{"states":["approved"]}}' --type=merge ef231ce8-fac4bcdb5-1fb1-41c5-9323-349698b9b757test-user20-rhoam -n toolchain-host-operator
 
 
 

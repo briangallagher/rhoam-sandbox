@@ -215,6 +215,35 @@ objects:
         - apiVersion: rbac.authorization.k8s.io/v1
           kind: Role
           metadata:
+            name: rhoamtenant-crud
+            namespace: ${USERNAME}-dev
+          rules:
+            - apiGroups:
+                - integreatly.org
+              resources:
+                - rhoamtenants
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - update
+                - patch
+        - apiVersion: rbac.authorization.k8s.io/v1
+          kind: RoleBinding
+          metadata:
+            name: rhoamtenant-crud
+            namespace: ${USERNAME}-dev
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: Role
+            name: rhoamtenant-crud
+          subjects:
+            - kind: User
+              name: ${USERNAME}
+        - apiVersion: rbac.authorization.k8s.io/v1
+          kind: Role
+          metadata:
             name: rbac-edit
             namespace: ${USERNAME}-dev
           rules:
@@ -241,6 +270,66 @@ objects:
             apiGroup: rbac.authorization.k8s.io
             kind: Role
             name: rbac-edit
+          subjects:
+            - kind: User
+              name: ${USERNAME}
+        - apiVersion: rbac.authorization.k8s.io/v1
+          kind: Role
+          metadata:
+            name: user-rhoam-tenant
+            namespace: ${USERNAME}-dev
+          rules:
+            - apiGroups:
+                - integreatly.org
+              resources:
+                - rhoamtenants
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - update
+                - patch
+                - delete
+        - apiVersion: rbac.authorization.k8s.io/v1
+          kind: RoleBinding
+          metadata:
+            name: user-rhoam-tenant-binding
+            namespace: ${USERNAME}-dev
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: Role
+            name: user-rhoam-tenant
+          subjects:
+            - kind: User
+              name: ${USERNAME}
+        - apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRole
+          metadata:
+            name: user-rhoam-tenant-cr
+            namespace: ${USERNAME}-dev
+          rules:
+            - apiGroups:
+                - integreatly.org
+              resources:
+                - rhoamtenants
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - update
+                - patch
+                - delete
+        - apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRoleBinding
+          metadata:
+            name: user-rhoam-tenant-binding-cr
+            namespace: ${USERNAME}-dev
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: user-rhoam-tenant-cr
           subjects:
             - kind: User
               name: ${USERNAME}
@@ -398,6 +487,35 @@ objects:
             - kind: User
               name: ${USERNAME}
         - apiVersion: rbac.authorization.k8s.io/v1
+          kind: Role
+          metadata:
+            name: rhoamtenant-crud
+            namespace: ${USERNAME}-dev
+          rules:
+            - apiGroups:
+                - integreatly.org
+              resources:
+                - rhoamtenants
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - update
+                - patch
+        - apiVersion: rbac.authorization.k8s.io/v1
+          kind: RoleBinding
+          metadata:
+            name: rhoamtenant-crud
+            namespace: ${USERNAME}-dev
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: Role
+            name: rhoamtenant-crud
+          subjects:
+            - kind: User
+              name: ${USERNAME}              
+        - apiVersion: rbac.authorization.k8s.io/v1
           kind: RoleBinding
           metadata:
             name: user-edit
@@ -409,6 +527,66 @@ objects:
           subjects:
             - kind: User
               name: ${USERNAME}
+        - apiVersion: rbac.authorization.k8s.io/v1
+          kind: Role
+          metadata:
+            name: user-rhoam-tenant
+            namespace: ${USERNAME}-dev
+          rules:
+            - apiGroups:
+                - integreatly.org
+              resources:
+                - rhoamtenants
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - update
+                - patch
+                - delete
+        - apiVersion: rbac.authorization.k8s.io/v1
+          kind: RoleBinding
+          metadata:
+            name: user-rhoam-tenant-binding
+            namespace: ${USERNAME}-dev
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: Role
+            name: user-rhoam-tenant
+          subjects:
+            - kind: User
+              name: ${USERNAME}      
+        - apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRole
+          metadata:
+            name: user-rhoam-tenant-cr
+            namespace: ${USERNAME}-dev
+          rules:
+            - apiGroups:
+                - integreatly.org
+              resources:
+                - rhoamtenants
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - update
+                - patch
+                - delete
+        - apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRoleBinding
+          metadata:
+            name: user-rhoam-tenant-binding-cr
+            namespace: ${USERNAME}-dev
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: user-rhoam-tenant-cr
+          subjects:
+            - kind: User
+              name: ${USERNAME}                      
         - apiVersion: v1
           kind: LimitRange
           metadata:
