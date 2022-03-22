@@ -425,6 +425,20 @@ objects:
             podSelector: { }
             policyTypes:
               - Ingress
+        - apiVersion: networking.k8s.io/v1
+          kind: NetworkPolicy
+          metadata:
+            name: allow-3scale-traffic
+            namespace: ${USERNAME}-dev
+          spec:
+            ingress:
+              - from:
+                  - namespaceSelector:
+                      matchLabels:
+                        kubernetes.io/metadata.name: sandbox-rhoam-3scale
+            podSelector: { }
+            policyTypes:
+              - Ingress
       parameters:
         - name: USERNAME
           required: true
@@ -650,6 +664,20 @@ objects:
                   - namespaceSelector:
                       matchLabels:
                         name: ${USERNAME}-dev
+            podSelector: { }
+            policyTypes:
+              - Ingress
+        - apiVersion: networking.k8s.io/v1
+          kind: NetworkPolicy
+          metadata:
+            name: allow-3scale-traffic
+            namespace: ${USERNAME}-stage
+          spec:
+            ingress:
+              - from:
+                  - namespaceSelector:
+                      matchLabels:
+                        kubernetes.io/metadata.name: sandbox-rhoam-3scale
             podSelector: { }
             policyTypes:
               - Ingress
