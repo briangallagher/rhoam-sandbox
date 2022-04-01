@@ -30,12 +30,12 @@ objects:
             quota:
               hard:
                 limits.cpu: 20000m
-                limits.memory: 40Gi
-                limits.ephemeral-storage: 10Gi
-                requests.cpu: 4000m
-                requests.memory: 40Gi
-                requests.storage: 20Gi
-                requests.ephemeral-storage: 10Gi
+                limits.memory: 7Gi
+                limits.ephemeral-storage: 7Gi
+                requests.cpu: 1750m
+                requests.memory: 7Gi
+                requests.storage: 15Gi
+                requests.ephemeral-storage: 7Gi
                 count/persistentvolumeclaims: "5"
             selector:
               annotations:
